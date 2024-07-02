@@ -9,7 +9,7 @@ _Work in progress._
 Ensure you have atleast JDK 17 and Maven installed before proceeding with the setup.
 
 1. Database Configuration: The application uses environment variables to configure the database connection by default. If not set, it falls back to the following settings:
-   - **DATABASE_URL**: `jdbc:mysql://localhost:3306/frameworksTrab` (MySQL 8.3.x server with the `frameworksTrab` database already created)
+   - **DATABASE_URL**: `jdbc:mysql://localhost:3306/frameworksTrab` (`frameworksTrab` database in a MySQL 8.3.x server.)
    - **DATABASE_USERNAME**: `root` (Default user; should have appropriate permissions for Hibernate schema management)
    - **DATABASE_PASSWORD**: empty
 

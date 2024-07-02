@@ -13,7 +13,7 @@ public class Tarefa {
     @Temporal(TemporalType.DATE)
     private Date data;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Pessoa pessoa;
 
     // Getters and Setters
@@ -60,6 +60,7 @@ public class Tarefa {
 
     @Override
     public String toString() {
-        return "Tarefa{id=" + id + ", titulo='" + titulo + "', descricao='" + descricao + "', data=" + data + ", pessoa=" + pessoa + "}";
+        return "Tarefa{id=" + id + ", titulo='" + titulo + "', descricao='" + descricao + "', data=" + data
+                + ", pessoa=" + pessoa + "}";
     }
 }

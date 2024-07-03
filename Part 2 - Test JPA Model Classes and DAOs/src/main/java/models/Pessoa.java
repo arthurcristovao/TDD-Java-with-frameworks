@@ -1,17 +1,20 @@
 package models;
 
 import javax.persistence.*;
-import java.util.List;
+
+import java.util.ArrayList;
 
 @Entity
 public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String nome;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tarefa> tarefas;
+    private ArrayList<Tarefa> tarefas = new ArrayList<Tarefa>();
 
     // Getters and Setters
 
@@ -19,24 +22,26 @@ public class Pessoa {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
+        if (nome == null || nome.isBlank())
+            throw new IllegalArgumentException("O campo nome não pode ficar em branco!");
+
         this.nome = nome;
     }
 
-    public List<Tarefa> getTarefas() {
+    public ArrayList<Tarefa> getTarefas() {
         return tarefas;
     }
 
-    public void setTarefas(List<Tarefa> tarefas) {
-        this.tarefas = tarefas;
+    public void addTarefa(Tarefa tarefa) {
+        if (tarefa == null)
+            throw new IllegalArgumentException("A tarefa a ser inserida não pode ser nula!");
+
+        tarefas.add(tarefa);
     }
 
     @Override

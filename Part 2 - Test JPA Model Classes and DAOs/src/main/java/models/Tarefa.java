@@ -8,8 +8,12 @@ public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String titulo;
+
     private String descricao;
+
     @Temporal(TemporalType.DATE)
     private Date data;
 
@@ -22,15 +26,14 @@ public class Tarefa {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitulo() {
         return titulo;
     }
 
     public void setTitulo(String titulo) {
+        if (titulo == null || titulo.isBlank())
+            throw new IllegalArgumentException("O Título da tarefa não pode ser nulo ou vazio!");
+
         this.titulo = titulo;
     }
 
@@ -55,6 +58,9 @@ public class Tarefa {
     }
 
     public void setPessoa(Pessoa pessoa) {
+        if (pessoa == null)
+            throw new IllegalArgumentException("A pessoa da tarefa não pode ser nula!");
+
         this.pessoa = pessoa;
     }
 

@@ -6,7 +6,6 @@ import models.Pessoa;
 import models.Tarefa;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +23,7 @@ public class Menu {
             System.out.println("2 - Tarefa");
             System.out.println("0 - Sair");
             int opcao = scanner.nextInt();
-            scanner.nextLine();  // Consumir a quebra de linha
+            scanner.nextLine(); // Consumir a quebra de linha
 
             switch (opcao) {
                 case 1:
@@ -52,7 +51,7 @@ public class Menu {
             System.out.println("6 - Listar Todas");
             System.out.println("0 - Voltar");
             int opcao = scanner.nextInt();
-            scanner.nextLine();  // Consumir a quebra de linha
+            scanner.nextLine(); // Consumir a quebra de linha
 
             switch (opcao) {
                 case 1:
@@ -69,7 +68,7 @@ public class Menu {
                 case 2:
                     System.out.println("Digite o ID:");
                     int idPesquisa = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         Pessoa pessoa = pessoaDAO.get(idPesquisa);
                         if (pessoa != null) {
@@ -100,7 +99,7 @@ public class Menu {
                 case 4:
                     System.out.println("Digite o ID da pessoa a ser editada:");
                     int idEdicao = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         Pessoa pessoaEditada = pessoaDAO.get(idEdicao);
                         if (pessoaEditada != null) {
@@ -118,7 +117,7 @@ public class Menu {
                 case 5:
                     System.out.println("Digite o ID da pessoa a ser deletada:");
                     int idDelecao = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         pessoaDAO.delete(idDelecao);
                         System.out.println("Pessoa deletada com sucesso.");
@@ -128,7 +127,7 @@ public class Menu {
                     break;
                 case 6:
                     try {
-                        List<Pessoa> todasPessoas = pessoaDAO.list(100, 0);  // Ajuste os parâmetros conforme necessário
+                        List<Pessoa> todasPessoas = pessoaDAO.list(100, 0); // Ajuste os parâmetros conforme necessário
                         if (todasPessoas.isEmpty()) {
                             System.out.println("Nenhuma pessoa encontrada.");
                         } else {
@@ -158,14 +157,14 @@ public class Menu {
             System.out.println("5 - Deletar por Id");
             System.out.println("0 - Voltar");
             int opcao = scanner.nextInt();
-            scanner.nextLine();  // Consumir a quebra de linha
+            scanner.nextLine(); // Consumir a quebra de linha
 
             switch (opcao) {
                 case 1:
                     Tarefa novaTarefa = new Tarefa();
                     System.out.println("Digite o ID da pessoa relacionada:");
                     int pessoaId = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         Pessoa pessoa = pessoaDAO.get(pessoaId);
                         if (pessoa == null) {
@@ -175,9 +174,9 @@ public class Menu {
                         novaTarefa.setPessoa(pessoa);
                         System.out.println("Digite o título:");
                         novaTarefa.setTitulo(scanner.nextLine());
-                        System.out.println("Digite a descrição:");
+                        System.out.println("Digite a descrição: (Opcional)");
                         novaTarefa.setDescricao(scanner.nextLine());
-                        System.out.println("Digite a data (yyyy-MM-dd):");
+                        System.out.println("Digite a data (yyyy-MM-dd) (Opcional):");
                         try {
                             novaTarefa.setData(new java.sql.Date(dateFormat.parse(scanner.nextLine()).getTime()));
                             tarefaDAO.insert(novaTarefa);
@@ -191,7 +190,7 @@ public class Menu {
                     break;
                 case 2:
                     try {
-                        List<Tarefa> tarefas = tarefaDAO.list(100, 0);  // Ajuste os parâmetros conforme necessário
+                        List<Tarefa> tarefas = tarefaDAO.list(100, 0); // Ajuste os parâmetros conforme necessário
                         if (tarefas.isEmpty()) {
                             System.out.println("Nenhuma tarefa encontrada.");
                         } else {
@@ -206,7 +205,7 @@ public class Menu {
                 case 3:
                     System.out.println("Digite o ID da pessoa:");
                     int pessoaIdPesquisa = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         List<Tarefa> tarefasPorPessoa = tarefaDAO.listByPessoaId(pessoaIdPesquisa);
                         if (tarefasPorPessoa.isEmpty()) {
@@ -223,7 +222,7 @@ public class Menu {
                 case 4:
                     System.out.println("Digite o ID da pessoa:");
                     int pessoaIdEdicao = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         List<Tarefa> tarefasPorPessoa = tarefaDAO.listByPessoaId(pessoaIdEdicao);
                         if (tarefasPorPessoa.isEmpty()) {
@@ -235,7 +234,7 @@ public class Menu {
                         }
                         System.out.println("Digite o ID da tarefa a ser editada:");
                         int idTarefaEdicao = scanner.nextInt();
-                        scanner.nextLine();  // Consumir a quebra de linha
+                        scanner.nextLine(); // Consumir a quebra de linha
                         Tarefa tarefaEditada = tarefaDAO.get(idTarefaEdicao);
                         if (tarefaEditada != null) {
                             System.out.println("Digite o novo título:");
@@ -244,7 +243,8 @@ public class Menu {
                             tarefaEditada.setDescricao(scanner.nextLine());
                             System.out.println("Digite a nova data (yyyy-MM-dd):");
                             try {
-                                tarefaEditada.setData(new java.sql.Date(dateFormat.parse(scanner.nextLine()).getTime()));
+                                tarefaEditada
+                                        .setData(new java.sql.Date(dateFormat.parse(scanner.nextLine()).getTime()));
                                 tarefaDAO.update(tarefaEditada);
                                 System.out.println("Tarefa editada com sucesso.");
                             } catch (Exception e) {
@@ -260,7 +260,7 @@ public class Menu {
                 case 5:
                     System.out.println("Digite o ID da pessoa:");
                     int pessoaIdDelecao = scanner.nextInt();
-                    scanner.nextLine();  // Consumir a quebra de linha
+                    scanner.nextLine(); // Consumir a quebra de linha
                     try {
                         List<Tarefa> tarefasPorPessoa = tarefaDAO.listByPessoaId(pessoaIdDelecao);
                         if (tarefasPorPessoa.isEmpty()) {
@@ -272,7 +272,7 @@ public class Menu {
                         }
                         System.out.println("Digite o ID da tarefa a ser deletada:");
                         int idTarefaDelecao = scanner.nextInt();
-                        scanner.nextLine();  // Consumir a quebra de linha
+                        scanner.nextLine(); // Consumir a quebra de linha
                         tarefaDAO.delete(idTarefaDelecao);
                         System.out.println("Tarefa deletada com sucesso.");
                     } catch (Exception e) {

@@ -1,17 +1,11 @@
 package testes;
 
-import models.Pessoa;
-import org.junit.jupiter.api.*;
-
-import dao.PessoaDAO;
-import dao.TarefaDAO;
-import util.PersistenceUtil;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import java.util.List;
 
+import models.Pessoa;
+import dao.PessoaDAO;
+
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

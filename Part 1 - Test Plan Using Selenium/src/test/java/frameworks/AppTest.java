@@ -116,6 +116,8 @@ public class AppTest {
     @Test
     @Order(2)
     public void testeVerificaPostPublicado(){
+        assertNotNull(postURL, "A URL do post não deve ser nula");
+
         // Acessa a URL do post
         pastebinAutomation.accessURL(postURL);
         pastebinAutomation.addDelay(5000);
@@ -209,6 +211,8 @@ public class AppTest {
     @Test
     @Order(4)
     public void testeVerificaPostBurnAfterRead(){
+        assertNotNull(postURL, "A URL do post não deve ser nula");
+
         pastebinAutomation.accessURL(postURL);
         pastebinAutomation.addDelay(5000);
 
@@ -235,11 +239,14 @@ public class AppTest {
 
         postURL = pastebinAutomation.getUrl();
         pastebinAutomation.addDelay(2000);
+        assertNotNull(postURL, "A URL do post não deve ser nula");
     }
 
     @Test
     @Order(5)
     public void testeVerificaPostExpirado(){
+        assertNotNull(postURL, "A URL do post não deve ser nula");
+
         pastebinAutomation.accessURL(postURL);
         pastebinAutomation.addDelay(5000);
 

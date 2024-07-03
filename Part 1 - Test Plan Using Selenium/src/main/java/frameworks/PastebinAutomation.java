@@ -101,10 +101,9 @@ public class PastebinAutomation {
 
         for (WebElement button : buttons) {
             if (button.getText().equals(text)) {
-                // Cast the WebDriver instance to JavascriptExecutor
+
                 JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
 
-                // Execute JavaScript to click the button
                 jsExecutor.executeScript("arguments[0].click();", button);
                 break;
             }

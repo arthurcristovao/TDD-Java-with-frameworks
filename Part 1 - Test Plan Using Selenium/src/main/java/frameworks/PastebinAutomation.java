@@ -55,14 +55,11 @@ public class PastebinAutomation {
     public ArrayList<String> openCategoryList() {
         ArrayList<String> categories = new ArrayList<>();
 
-        // Open the dropdown to make the categories visible
         WebElement dropdown = webDriver.findElement(By.cssSelector("span.select2-selection--single"));
         dropdown.click();
 
-        // Add a short delay to ensure the dropdown is open
         addDelay(2000);
 
-        // Find all category elements
         List<WebElement> categoryElements = webDriver
                 .findElements(By.cssSelector("ul.select2-results__options li.select2-results__option"));
 
@@ -128,23 +125,6 @@ public class PastebinAutomation {
         }
     }
 
-    public String captureTextByText(String text) {
-        // List to store the text from divs or spans
-        String capturedText = "";
-
-        // Locate all div and span elements
-        List<WebElement> elements = webDriver.findElements(By.cssSelector("div, span"));
-
-        for (WebElement element : elements) {
-            if (element.getText().contains(text)) {
-                capturedText = element.getText();
-                break;
-            }
-        }
-
-        return capturedText;
-    }
-
     public String getPostTitle() {
         List<WebElement> divElements = webDriver.findElements(By.tagName("div"));
         for (WebElement div : divElements) {
@@ -159,7 +139,6 @@ public class PastebinAutomation {
 
     public String getPostDescription() {
         List<WebElement> elements = webDriver.findElements(By.cssSelector("div, span"));
-
         String capturedText = "";
 
         for (WebElement element : elements) {
@@ -169,43 +148,74 @@ public class PastebinAutomation {
             }
         }
         System.out.println(capturedText);
-
         return capturedText;
     }
     
     public String getPostCategory() {
-        // Lista todos os elementos span na página
         List<WebElement> spans = webDriver.findElements(By.tagName("span"));
-    
-        // Variável para armazenar o texto capturado
         String capturedText = "";
-    
-        // Itera sobre todos os spans
+
         for (WebElement span : spans) {
-            // Verifica se o atributo title do span é "Category"
             if ("Category".equals(span.getAttribute("title"))) {
-                // Captura o texto do span
                 capturedText = span.getText().trim();
-    
-                // Quebra o loop quando o texto for encontrado
                 break;
             }
         }
-    
-        // Processa o texto capturado para retornar a partir da primeira letra maiúscula
+
         for (int i = 0; i < capturedText.length(); i++) {
             if (Character.isUpperCase(capturedText.charAt(i))) {
                 capturedText = capturedText.substring(i);
                 break;
             }
         }
-    
-        // Imprime o texto capturado
         System.out.println(capturedText);
-    
-        // Retorna o texto capturado
         return capturedText;
     }
     
+    public void setBurnAfterRead(boolean valor) {
+        List<WebElement> labels = webDriver.findElements(By.cssSelector("label"));
+    
+        for (WebElement label : labels) {
+            if (label.getText().contains("Burn after read")) {
 
+                ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", label);
+
+                WebElement span = label.findElement(By.tagName("span"));
+
+                if (span != null) {
+                    if (valor) {
+                        span.click();
+                        System.out.println("Checkbox 'Burn after read' marcado.");
+                    } else {
+                        System.out.println("Checkbox 'Burn after read' não marcado, valor = false.");
+                    }
+                }
+                return;
+            }
+        }
+    
+        // Caso a label não seja encontrada
+        System.out.println("Label 'Burn after read' não encontrada.");
+    }
+
+    public void pressShowPasteBurnAfterRead(){
+        pressButtonByText("Ok, show me the paste");
+    }
+    
+    public boolean verifyIfPagesBurn() {
+        // Usar JavaScriptExecutor para procurar a div com a classe 'content__title'
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        WebElement div = (WebElement) js.executeScript(
+            "return document.querySelector('div.content__title');"
+        );
+
+        // Verificar se a div foi encontrada e se contém o texto '404'
+        if (div != null) {
+            String divText = div.getText();
+            return divText.contains("404");
+        }
+
+        // Retornar falso se a div não for encontrada ou não contém '404'
+        return false;
+    }
 }

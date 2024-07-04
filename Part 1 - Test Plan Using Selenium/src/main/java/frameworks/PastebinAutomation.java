@@ -11,47 +11,57 @@ public class PastebinAutomation {
 
     private WebDriver webDriver;
     
+    // Configura o WebDriver para tela cheia
     private void configureWebDriver() {
         webDriver.manage().window().fullscreen();
     }
 
+    // Inicializa o WebDriver para usar o Chrome
     public void useChrome() {
         webDriver = new ChromeDriver();
         configureWebDriver();
     }
 
+    // Acessa a URL especificada
     public void accessURL(String url) {
         webDriver.get(url);
     }
 
+    // Obtém a URL atual
     public String getUrl() {
         return webDriver.getCurrentUrl();
     }
 
+    // Fecha o WebDriver
     public void closeDriver() {
         webDriver.quit();
     }
 
+    // Define o título do post
     public void setTitle(String text) {
         WebElement description = webDriver.findElement(By.id("postform-name"));
         description.sendKeys(text);
     }
 
+    // Obtém o título do post
     public String getTitle() {
         WebElement description = webDriver.findElement(By.id("postform-name"));
         return description.getAttribute("value");
     }
 
+    // Define a descrição do post
     public void setDescription(String text) {
         WebElement description = webDriver.findElement(By.id("postform-text"));
         description.sendKeys(text);
     }
 
+    // Obtém a descrição do post
     public String getDescription() {
         WebElement description = webDriver.findElement(By.id("postform-text"));
         return description.getAttribute("value");
     }
 
+    // Abre a lista de categorias e retorna as categorias disponíveis
     public ArrayList<String> openCategoryList() {
         ArrayList<String> categories = new ArrayList<>();
 
@@ -63,18 +73,18 @@ public class PastebinAutomation {
         List<WebElement> categoryElements = webDriver
                 .findElements(By.cssSelector("ul.select2-results__options li.select2-results__option"));
 
-        System.out.println("Number of categories found: " + categoryElements.size());
+        //System.out.println("Number of categories found: " + categoryElements.size());
 
         for (WebElement element : categoryElements) {
             String text = element.getText();
-            System.out.println("Category found: " + text);
+            //System.out.println("Category found: " + text);
             categories.add(text);
         }
 
         return categories;
     }
 
-    // Set category based on the provided name
+    // Define a categoria do post baseada no nome fornecido
     public void setCategory(String categoryName) {
         List<WebElement> categoryElements = webDriver
                 .findElements(By.cssSelector(".select2-results__options .select2-results__option"));
@@ -87,43 +97,44 @@ public class PastebinAutomation {
         }
     }
 
+    // Retorna uma categoria aleatória da lista fornecida
     public String getRandomCategory(ArrayList<String> categories) {
         if (categories.isEmpty()) {
-            return null; // or handle this case appropriately
+            return null; 
         }
         Random rand = new Random();
         return categories.get(rand.nextInt(categories.size()));
     }
 
-    // Press "Create New Paste" button
+    // Pressiona um botão baseado no texto fornecido
     public void pressButtonByText(String text) {
         List<WebElement> buttons = webDriver.findElements(By.tagName("button"));
 
         for (WebElement button : buttons) {
             if (button.getText().equals(text)) {
-
                 JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
-
                 jsExecutor.executeScript("arguments[0].click();", button);
                 break;
             }
         }
     }
 
-    // Press "Create New Paste" button
+    // Pressiona o botão "Create New Paste"
     public void pressPasteButton() {
         pressButtonByText("Create New Paste");
     }
 
+    // Adiciona um atraso de tempo em milissegundos
     public void addDelay(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.out.println("Delay was interrupted");
+            System.out.println("Delay foi interrompido");
         }
     }
 
+    // Obtém o título do post publicado
     public String getPostTitle() {
         List<WebElement> divElements = webDriver.findElements(By.tagName("div"));
         for (WebElement div : divElements) {
@@ -136,6 +147,7 @@ public class PastebinAutomation {
         return "";
     }
 
+    // Obtém a descrição do post publicado
     public String getPostDescription() {
         List<WebElement> elements = webDriver.findElements(By.cssSelector("div, span"));
         String capturedText = "";
@@ -150,6 +162,7 @@ public class PastebinAutomation {
         return capturedText;
     }
     
+    // Obtém a categoria do post publicado
     public String getPostCategory() {
         List<WebElement> spans = webDriver.findElements(By.tagName("span"));
         String capturedText = "";
@@ -171,16 +184,14 @@ public class PastebinAutomation {
         return capturedText;
     }
     
+    // Define a opção "Burn After Read" do post
     public void setBurnAfterRead(boolean valor) {
         List<WebElement> labels = webDriver.findElements(By.cssSelector("label"));
     
         for (WebElement label : labels) {
             if (label.getText().contains("Burn after read")) {
-
                 ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", label);
-
                 WebElement span = label.findElement(By.tagName("span"));
-
                 if (span != null) {
                     if (valor) {
                         span.click();
@@ -192,29 +203,26 @@ public class PastebinAutomation {
                 return;
             }
         }
-    
-        // Caso a label não seja encontrada
         System.out.println("Label 'Burn after read' não encontrada.");
     }
 
+    // Pressiona o botão "Ok, show me the paste" para posts com "Burn After Read"
     public void pressShowPasteBurnAfterRead(){
         pressButtonByText("Ok, show me the paste");
     }
     
+    // Verifica se a página indica que o post expirou
     public boolean verifyIfPagesBurn() {
-        // Usar JavaScriptExecutor para procurar a div com a classe 'content__title'
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         WebElement div = (WebElement) js.executeScript(
             "return document.querySelector('div.content__title');"
         );
 
-        // Verificar se a div foi encontrada e se contém o texto '404'
         if (div != null) {
             String divText = div.getText();
             return divText.contains("404");
         }
 
-        // Retornar falso se a div não for encontrada ou não contém '404'
         return false;
     }
 }

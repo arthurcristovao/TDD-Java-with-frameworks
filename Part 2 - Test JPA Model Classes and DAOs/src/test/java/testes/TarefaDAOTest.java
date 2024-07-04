@@ -5,10 +5,6 @@ import models.Tarefa;
 import org.junit.jupiter.api.*;
 
 import dao.*;
-import util.PersistenceUtil;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import java.sql.Date;
 import java.util.List;

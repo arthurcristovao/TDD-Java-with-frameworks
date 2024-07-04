@@ -6,6 +6,7 @@ import models.Pessoa;
 import models.Tarefa;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -172,18 +173,31 @@ public class Menu {
                             break;
                         }
                         novaTarefa.setPessoa(pessoa);
+
                         System.out.println("Digite o título:");
                         novaTarefa.setTitulo(scanner.nextLine());
+
                         System.out.println("Digite a descrição: (Opcional)");
                         novaTarefa.setDescricao(scanner.nextLine());
-                        System.out.println("Digite a data (yyyy-MM-dd) (Opcional):");
-                        try {
-                            novaTarefa.setData(new java.sql.Date(dateFormat.parse(scanner.nextLine()).getTime()));
-                            tarefaDAO.insert(novaTarefa);
-                            System.out.println("Tarefa criada com sucesso.");
-                        } catch (Exception e) {
-                            System.out.println("Formato de data inválido. Tente novamente.");
+
+                        while (novaTarefa.getData().equals(new Date(0))) {
+                            System.out.println("Digite a data (yyyy-MM-dd) (Opcional):");
+                            try {
+                                String dateInput = scanner.nextLine();
+
+                                if (dateInput.isBlank())
+                                    novaTarefa.setData(null);
+                                else
+                                    novaTarefa.setData(new java.sql.Date(dateFormat.parse(dateInput).getTime()));
+
+                                break;
+                            } catch (Exception e) {
+                                novaTarefa.setData(new Date(0));
+                                System.out.println("Formato de data inválido. Tente novamente.");
+                            }
                         }
+
+                        tarefaDAO.insert(novaTarefa);
                     } catch (Exception e) {
                         System.out.println("Erro ao criar tarefa: " + e.getMessage());
                     }

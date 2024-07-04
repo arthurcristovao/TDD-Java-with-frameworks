@@ -3,6 +3,7 @@ package models;
 import javax.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Pessoa {
@@ -14,7 +15,7 @@ public class Pessoa {
     private String nome;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Tarefa> tarefas = new ArrayList<Tarefa>();
+    private List<Tarefa> tarefas = new ArrayList<Tarefa>();
 
     // Getters and Setters
 
@@ -33,7 +34,7 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public ArrayList<Tarefa> getTarefas() {
+    public List<Tarefa> getTarefas() {
         return tarefas;
     }
 

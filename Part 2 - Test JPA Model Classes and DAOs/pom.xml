@@ -133,6 +133,7 @@
 				<configuration>
 					<systemPropertyVariables>
 						<runningTests>true</runningTests>
+						<net.bytebuddy.experimental>true</net.bytebuddy.experimental>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

@@ -15,7 +15,7 @@ public class Tarefa {
     private String descricao;
 
     @Temporal(TemporalType.DATE)
-    private Date data;
+    private Date data = new Date(0);
 
     @ManyToOne(optional = false)
     private Pessoa pessoa;

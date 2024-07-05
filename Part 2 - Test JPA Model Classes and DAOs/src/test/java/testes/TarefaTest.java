@@ -4,13 +4,24 @@ import models.Pessoa;
 import models.Tarefa;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TarefaTest {
 
     private Tarefa tarefa;
     private Pessoa pessoa;
+
+    // no lifecycle do maven de test já faz, mas se define aqui também
+    // se for rodar pelo junit
+    @BeforeAll
+    public void defineAsRunningTest() {
+        System.setProperty("runningTests", "true");
+    }
 
     @BeforeEach
     public void setUp() {
@@ -32,6 +43,4 @@ class TarefaTest {
     public void testPessoaNullThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> tarefa.setPessoa(null));
     }
-
-    // Work in progress
 }

@@ -12,6 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PessoaDAOTest {
     private PessoaDAO pessoaDAO;
 
+    // no lifecycle do maven de test já faz, mas se define aqui também
+    // se for rodar pelo junit
+    @BeforeAll
+    public void defineAsRunningTest() {
+        System.setProperty("runningTests", "true");
+    }
+
     @BeforeEach
     public void setUp() {
         pessoaDAO = new PessoaDAO();

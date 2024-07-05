@@ -249,21 +249,33 @@ public class Menu {
                         System.out.println("Digite o ID da tarefa a ser editada:");
                         int idTarefaEdicao = scanner.nextInt();
                         scanner.nextLine(); // Consumir a quebra de linha
+
                         Tarefa tarefaEditada = tarefaDAO.get(idTarefaEdicao);
                         if (tarefaEditada != null) {
                             System.out.println("Digite o novo título:");
                             tarefaEditada.setTitulo(scanner.nextLine());
+
                             System.out.println("Digite a nova descrição:");
                             tarefaEditada.setDescricao(scanner.nextLine());
-                            System.out.println("Digite a nova data (yyyy-MM-dd):");
-                            try {
-                                tarefaEditada
-                                        .setData(new java.sql.Date(dateFormat.parse(scanner.nextLine()).getTime()));
-                                tarefaDAO.update(tarefaEditada);
-                                System.out.println("Tarefa editada com sucesso.");
-                            } catch (Exception e) {
-                                System.out.println("Formato de data inválido. Tente novamente.");
-                            }
+
+                            do {
+                                System.out.println("Digite a data (yyyy-MM-dd) (Opcional):");
+                                try {
+                                    String dateInput = scanner.nextLine();
+
+                                    if (dateInput.isBlank())
+                                        tarefaEditada.setData(null);
+                                    else
+                                        tarefaEditada.setData(new java.sql.Date(dateFormat.parse(dateInput).getTime()));
+
+                                    break;
+                                } catch (Exception e) {
+                                    tarefaEditada.setData(new Date(0));
+                                    System.out.println("Formato de data inválido. Tente novamente.");
+                                }
+                            } while (tarefaEditada.getData().equals(new Date(0)));
+
+                            tarefaDAO.update(tarefaEditada);
                         } else {
                             System.out.println("Tarefa não encontrada.");
                         }
@@ -287,6 +299,7 @@ public class Menu {
                         System.out.println("Digite o ID da tarefa a ser deletada:");
                         int idTarefaDelecao = scanner.nextInt();
                         scanner.nextLine(); // Consumir a quebra de linha
+
                         tarefaDAO.delete(idTarefaDelecao);
                         System.out.println("Tarefa deletada com sucesso.");
                     } catch (Exception e) {

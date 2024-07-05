@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class PastebinAutomation {
 
     private WebDriver webDriver;
-    
+
     // Configura o WebDriver para tela cheia
     private void configureWebDriver() {
         webDriver.manage().window().fullscreen();
@@ -22,12 +22,24 @@ public class PastebinAutomation {
         configureWebDriver();
     }
 
+    // Fecha barra de ad em baixo
+    public void closeAd() {
+        addDelay(15000);
+        try {
+            WebElement element = webDriver.findElement(By.id("hideSlideBanner"));
+            element.click();
+        } catch (Exception e) {
+            // faz nada
+        }
+    }
+
     // Acessa a URL especificada
     public void accessURL(String url) {
         webDriver.get(url);
+        closeAd();
     }
 
-    // Obtém a URL atual
+    // Obtém a URL atual guardada em variavel
     public String getUrl() {
         return webDriver.getCurrentUrl();
     }
@@ -73,11 +85,11 @@ public class PastebinAutomation {
         List<WebElement> categoryElements = webDriver
                 .findElements(By.cssSelector("ul.select2-results__options li.select2-results__option"));
 
-        //System.out.println("Number of categories found: " + categoryElements.size());
+        // System.out.println("Number of categories found: " + categoryElements.size());
 
         for (WebElement element : categoryElements) {
             String text = element.getText();
-            //System.out.println("Category found: " + text);
+            // System.out.println("Category found: " + text);
             categories.add(text);
         }
 
@@ -100,7 +112,7 @@ public class PastebinAutomation {
     // Retorna uma categoria aleatória da lista fornecida
     public String getRandomCategory(ArrayList<String> categories) {
         if (categories.isEmpty()) {
-            return null; 
+            return null;
         }
         Random rand = new Random();
         return categories.get(rand.nextInt(categories.size()));
@@ -161,7 +173,7 @@ public class PastebinAutomation {
         System.out.println(capturedText);
         return capturedText;
     }
-    
+
     // Obtém a categoria do post publicado
     public String getPostCategory() {
         List<WebElement> spans = webDriver.findElements(By.tagName("span"));
@@ -183,11 +195,11 @@ public class PastebinAutomation {
         System.out.println(capturedText);
         return capturedText;
     }
-    
+
     // Define a opção "Burn After Read" do post
     public void setBurnAfterRead(boolean valor) {
         List<WebElement> labels = webDriver.findElements(By.cssSelector("label"));
-    
+
         for (WebElement label : labels) {
             if (label.getText().contains("Burn after read")) {
                 ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView(true);", label);
@@ -207,16 +219,15 @@ public class PastebinAutomation {
     }
 
     // Pressiona o botão "Ok, show me the paste" para posts com "Burn After Read"
-    public void pressShowPasteBurnAfterRead(){
+    public void pressShowPasteBurnAfterRead() {
         pressButtonByText("Ok, show me the paste");
     }
-    
+
     // Verifica se a página indica que o post expirou
     public boolean verifyIfPagesBurn() {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         WebElement div = (WebElement) js.executeScript(
-            "return document.querySelector('div.content__title');"
-        );
+                "return document.querySelector('div.content__title');");
 
         if (div != null) {
             String divText = div.getText();
